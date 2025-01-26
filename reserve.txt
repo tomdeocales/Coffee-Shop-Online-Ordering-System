@@ -1,0 +1,31 @@
+<?php
+// Database connection parameters
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "kapetann";
+
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// SQL query to retrieve orders and user's email
+$sql = "SELECT o.title, o.date, o.invoice_number, u.email FROM orders o INNER JOIN users u ON o.user_id = u.id";
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+    // Output data in table form
+    echo "<table><tr><th>Title</th><th>Date</th><th>Invoice Number</th><th>User Email</th></tr>";
+    while($row = $result->fetch_assoc()) {
+        echo "<tr><td>" . $row["title"] . "</td><td>" . $row["date"] . "</td><td>" . $row["invoice_number"] . "</td><td>" . $row["email"] . "</td></tr>";
+    }
+    echo "</table>";
+} else {
+    echo "0 results";
+}
+$conn->close();
+?>
